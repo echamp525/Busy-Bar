@@ -1,0 +1,7 @@
+{
+  "listenAddress": "192.168.1.50",
+  "barAddress": "192.168.1.80",
+  "port": 8770,
+  "python": "C:/path/to/python.exe",
+  "token": "GENERATED_LOCALLY_BY_CONFIGURE"
+}

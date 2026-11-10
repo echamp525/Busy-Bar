@@ -1,0 +1,10 @@
+{
+  "listenAddress": "192.168.1.50",
+  "barAddress": "192.168.1.80",
+  "port": 8768,
+  "python": "C:/path/to/python.exe",
+  "token": "GENERATED_LOCALLY_BY_CONFIGURE",
+  "folder": "C:/Pictures/BUSY Bar",
+  "libraryFile": "C:/path/to/Busy-Bar/data/photo-library.json",
+  "seconds": 8
+}

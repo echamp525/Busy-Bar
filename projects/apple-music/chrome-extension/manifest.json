@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "BUSY Bar Apple Music Remote",
+  "version": "1.1.0",
+  "description": "Browse your Apple Music library and playlists using the BUSY Bar dial.",
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "https://music.apple.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://music.apple.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "alarms",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_title": "Apple Music \u2014 reconnect / open player"
+  }
+}

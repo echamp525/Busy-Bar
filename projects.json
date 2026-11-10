@@ -1,0 +1,11 @@
+{
+  "projects": [
+    {"id":"siriusxm","name":"SiriusXM Remote","path":"projects/siriusxm","chatProjectNumber":4},
+    {"id":"picture-viewer","name":"Picture Viewer","path":"projects/picture-viewer","chatProjectNumber":6,"relatedProjects":["picture-studio"]},
+    {"id":"picture-studio","name":"Picture Studio","path":"projects/picture-studio","chatProjectNumber":7,"relatedProjects":["picture-viewer"]},
+    {"id":"apple-music","name":"Apple Music Remote","path":"projects/apple-music","chatProjectNumber":8}
+  ],
+  "links": [
+    {"from":"picture-viewer","to":"picture-studio","relationship":"companion","bidirectional":true,"sharedModule":"shared/photo-library","documentation":"docs/picture-project-link.md"}
+  ]
+}

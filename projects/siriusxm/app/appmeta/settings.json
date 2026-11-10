@@ -1,0 +1,15 @@
+{
+  "format_version": 1,
+  "version": 1,
+  "fields": {
+    "browse_mode": {
+      "label": "Browse",
+      "type": "enum",
+      "default": "all",
+      "options": [
+        {"value": "all", "label": "1. Browse All Channels"},
+        {"value": "library", "label": "2. Browse Library"}
+      ]
+    }
+  }
+}

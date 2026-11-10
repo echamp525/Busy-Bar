@@ -1,0 +1,27 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+let now=1000,input;const frames=[],timers=[];
+const settle=()=>new Promise(r=>setImmediate(r));
+const data={available:true,title:'Show · Octane',artist:'Bad Omens - Song name',channel:'Octane',status:'Playing'};
+const c={Date:{now:()=>now},localStorage:{getItem(){return 'library'},setItem(){}},setInterval(fn,ms){timers.push({fn,ms});return fn;},clearInterval(){},setTimeout(){},clearTimeout(){},listen(name,fn){input=fn;return ()=>{};},fetch(url,options){if(url.includes('/display/draw'))frames.push(JSON.parse(options.body));return Promise.resolve({ok:true,json:()=>Promise.resolve(data)});}};
+vm.runInNewContext(fs.readFileSync('projects/siriusxm/app/scripts/main.template.js','utf8'),c);
+const tick=()=>timers.find(t=>t.ms===125).fn();
+const element=(frame,id)=>frame.elements.find(e=>e.id===id);
+(async()=>{
+ await settle();await settle();
+ now=36999;c.draw(data);await settle();assert.equal(c.equalizerVisible,false);
+ now=37000;tick();await settle();assert.equal(c.equalizerVisible,true);assert.equal(element(frames.at(-1),'state').text,' ');
+ assert(element(frames.at(-1),'equalizer').data.includes('t c #FF4433'),'Heading must retain the Octane color');
+ for(const [symbol,color] of [['g','#44DD66'],['y','#FFCC33'],['r','#FF4433']])assert(element(frames.at(-1),'equalizer').data.includes(symbol+' c '+color),'Bars must match Apple Music');
+ assert.equal(element(frames.at(-1),'playback_icon').opacity,0);assert.equal(element(frames.at(-1),'detail_icon').opacity,0);assert.equal(element(frames.at(-1),'equalizer').z_index,10);
+ now+=125;tick();await settle();assert.equal(frames.at(-1).elements.length,1);assert.equal(c.equalizerHeading(now,false).text,'Octane');
+ now=c.equalizerPhaseAt+5000;tick();await settle();assert.equal(c.equalizerHeading(now,false).kind,'artist');assert.equal(frames.at(-1).elements[0].data.split('\n').slice(-16)[0].slice(0,7),'...t...');
+ now+=5000;tick();await settle();assert.equal(c.equalizerHeading(now,false).kind,'song');assert.equal(frames.at(-1).elements[0].data.split('\n').slice(-16)[0].slice(0,7),'..tttt.');
+ c.draw({...data,status:'Paused'});await settle();const rows=element(frames.at(-1),'equalizer').data.split('\n').slice(-7);assert(rows.slice(0,6).every(r=>/^\.+$/.test(r)));
+ c.openBrowse();await settle();assert.equal(c.equalizerVisible,false);assert.equal(element(frames.at(-1),'state').text,'BROWSE');assert(element(frames.at(-1),'equalizer').data.includes('. c none'));
+ c.closeBrowse(false);await settle();assert.equal(c.equalizerVisible,false);
+ now+=36000;c.draw(data);await settle();assert.equal(c.equalizerVisible,true);
+ c.draw({...data,tuning:true});await settle();assert.equal(c.equalizerVisible,false);assert.equal(element(frames.at(-1),'state').text,'TUNING');
+ c.tuningUntil=0;c.tunedUntil=0;c.draw({...data,title:'Show · Lithium',channel:'Lithium',artist:'Nirvana - Come As You Are'});await settle();assert.equal(c.equalizerVisible,false);
+ now+=36000;c.draw({...data,title:'Show · Lithium',channel:'Lithium',artist:'Nirvana - Come As You Are'});await settle();assert(element(frames.at(-1),'equalizer').data.includes('t c #66CC55'));
+ console.log('Passed Apple Music bar colors, station-color heading, 36-second switch, star/notes, pause and Browse/tuning resets.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -1,0 +1,9 @@
+{
+  "format_version": 1,
+  "id": "local.siriusxm.remote",
+  "name": "SiriusXM Remote",
+  "version": "1.6.2",
+  "api_version": "27.14.0",
+  "description": "PC-backed SiriusXM now playing and playback controls",
+  "heap_size_kib": 512
+}

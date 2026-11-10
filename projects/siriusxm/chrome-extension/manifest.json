@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "BUSY Bar SiriusXM Channel Dial",
+  "version": "1.3.0",
+  "description": "Connects your BUSY Bar dial to the SiriusXM player's channel list and skip control.",
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "https://www.siriusxm.com/player/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.siriusxm.com/player/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "alarms",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_title": "SiriusXM \u2014 reconnect / open player"
+  }
+}

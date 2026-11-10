@@ -18,3 +18,5 @@ Music extensions contact their respective companions through `127.0.0.1`. The Ba
 If the PC or Bar LAN address changes, rerun configuration, reinstall the generated Bar packages, and reload the extensions. Reserve the addresses in your router if you want to avoid that step. The PC must be awake; music websites must remain signed in and open.
 
 Generated `background.js`, extension `connection.js`, native packages, configuration, images, profiles, and status files remain local and must not be committed. These are public project sources; no browser cookies, subscription credentials, or user photos are needed to build them.
+
+Run `python tools/check_privacy.py` before publishing. CI runs the same check for common credential literals, private keys, provider tokens, email addresses, user-home paths, and private runtime files. It reports filenames and categories without printing detected values. Personal names or arbitrary account numbers are not always recognizable by a pattern, so review additions as well as running the check. GitHub's repository ownership and commit attribution are separate from file contents.
